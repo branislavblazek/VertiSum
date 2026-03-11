@@ -1,4 +1,7 @@
 export default async function handler(req, res) {
+    console.log("Request Method:", req.method);
+    console.log("Query Params:", req.query);
+
     if (req.method === 'GET')
     {
         const mode = req.query['hub.mode'];
