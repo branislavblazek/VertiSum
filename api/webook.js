@@ -6,6 +6,8 @@ export default async function handler(req, res) {
         const challenge = req.query['hub.challenge'];
         const verifyToken = process.env.VERIFY_TOKEN;
 
+        console.log(`Verifying: received ${token}, expected ${verifyToken}`);
+
         if (mode && token)
         {
             if (mode === 'subscribe' && token === verifyToken)
