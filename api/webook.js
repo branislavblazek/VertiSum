@@ -4,7 +4,7 @@ export default async function handler(req, res) {
         const mode = req.query['hub.mode'];
         const token = req.query['hub.verify_token'];
         const challenge = req.query['hub.challenge'];
-        const verifyToken = process.env.STRAVA_VERIFY_TOKEN;
+        const verifyToken = process.env.VERIFY_TOKEN;
 
         if (mode && token)
         {
@@ -16,7 +16,7 @@ export default async function handler(req, res) {
             }
         }
 
-        return res.sendStatus(403);
+        return res.status(403).send('Forbidden');
     }
 
     if (req.method === 'POST')
@@ -27,6 +27,6 @@ export default async function handler(req, res) {
         console.log("WEBOOK RECIEVED: ");
         console.log({aspect_type, object_type, object_id, owner_id});
 
-        return res.sendStatus(200);
+        return res.status(200).send('OK');
     }
 }
