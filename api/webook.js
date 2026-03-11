@@ -1,0 +1,32 @@
+export default async function handler(req, res) {
+    if (req.method === 'GET')
+    {
+        const mode = req.query['hub.mode'];
+        const token = req.query['hub.verify_token'];
+        const challenge = req.query['hub.challenge'];
+        const verifyToken = process.env.STRAVA_VERIFY_TOKEN;
+
+        if (mode && token)
+        {
+            if (mode === 'subscribe' && token === verifyToken)
+            {
+                // TODO: remove console.log
+                console.log('WEBHOOK_VERIFIED');
+                return res.json({'hub.challenge': challenge})
+            }
+        }
+
+        return res.sendStatus(403);
+    }
+
+    if (req.method === 'POST')
+    {
+        const { aspect_type, object_type, object_id, owner_id } = req.body;
+
+        // TODO: remove console.log
+        console.log("WEBOOK RECIEVED: ");
+        console.log({aspect_type, object_type, object_id, owner_id});
+
+        return res.sendStatus(200);
+    }
+}
