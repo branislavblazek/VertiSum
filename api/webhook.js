@@ -1,7 +1,4 @@
 export default async function handler(req, res) {
-    console.log("Request Method:", req.method);
-    console.log("Query Params:", req.query);
-
     if (req.method === 'GET')
     {
         const mode = req.query['hub.mode'];
@@ -9,14 +6,10 @@ export default async function handler(req, res) {
         const challenge = req.query['hub.challenge'];
         const verifyToken = process.env.VERIFY_TOKEN;
 
-        console.log(`Verifying: received ${token}, expected ${verifyToken}`);
-
         if (mode && token)
         {
             if (mode === 'subscribe' && token === verifyToken)
             {
-                // TODO: remove console.log
-                console.log('WEBHOOK_VERIFIED');
                 return res.json({'hub.challenge': challenge})
             }
         }
@@ -30,7 +23,7 @@ export default async function handler(req, res) {
 
         // TODO: remove console.log
         console.log("WEBOOK RECIEVED: ");
-        console.log({aspect_type, object_type, object_id, owner_id});
+        console.log(aspect_type, object_type, object_id, owner_id);
 
         return res.status(200).send('OK');
     }
