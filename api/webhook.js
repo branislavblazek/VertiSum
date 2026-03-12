@@ -1,7 +1,6 @@
-import getActivity from "../activity";
-import updateActivity from "../activity";
-import getAthleteStats from "../athlete";
-import getAccessToken from "../auth";
+import { getActivity, updateActivity } from "../activity.js";
+import getAthleteStats from "../athlete.js";
+import getAccessToken from "../auth.js";
 
 export default async function handler(req, res) {
     if (req.method === 'GET')
