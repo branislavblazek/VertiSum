@@ -1,3 +1,4 @@
+import getActivity from "../activity";
 import updateActivity from "../activity";
 import getAthleteStats from "../athlete";
 import getAccessToken from "../auth";
@@ -23,16 +24,28 @@ export default async function handler(req, res) {
 
     if (req.method === 'POST')
     {
+        const allowedTypes = ['Run', 'TrailRun'];
+        const { aspect_type, object_type, object_id, owner_id } = req.body;
+
+        if (aspect_type !== 'create' || object_type !== 'activity')
+        {
+            return res.status(200).send('IGNORE');
+        }
+
         const token = await getAccessToken();
 
-        const { aspect_type, object_type, object_id, owner_id } = req.body;
-        console.log("BODY: ", req.body);
+        const activity = await getActivity(object_id, token);
+        
+        if (!allowedTypes.includes(activity.sport_type))
+        {
+            return res.status(200).send('IGNORE');
+        }
 
         const stats = await getAthleteStats(owner_id, token);
 
         const elevation = stats.ytd_run_totals?.elevation_gain || 0;
         const formatted = `${elevation.toLocaleString('sk-SK')} m`
-        const description = `⛰️ ${formatted} | generované cez VertiSum`;
+        const description = `⛰️📈 ${formatted} | generované cez VertiSum`;
 
         await updateActivity(object_id, token, description)
 

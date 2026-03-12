@@ -1,7 +1,19 @@
-export default async function updateActivity(activityId, token, description) {
-    const url = `https://www.strava.com/api/v3/activities/${activityId}`;
+function getUrl(id) {
+    return `https://www.strava.com/api/v3/activities/${id}`;
+}
 
-    const response = await fetch(url, {
+export default async function getActivity(activityId, token) {
+    const response = await fetch(getUrl(activityId), {
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+    });
+
+    const activityData = await activityResponse.json();
+
+    return activityData;
+}
+
+export default async function updateActivity(activityId, token, description) {
+    const response = await fetch(getUrl(activityId), {
         method: 'PUT',
         headers: { 
         'Authorization': `Bearer ${token}`,
