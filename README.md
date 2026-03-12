@@ -2,7 +2,7 @@
 
 # ⛰️📈 VertiSum - Strava YTD Elevation Updater
 
-This is a serverless webhook for Strava. It automatically updates your Strava activity descriptions with your Year-to-Date (YTD) elevation gain. Only triggers for running activities (`Run` and `TrailRun`). It runs on Vercel as serverless function.
+This is a serverless webhook for Strava. It automatically updates your Strava activity descriptions with your Year-to-Date (YTD) elevation gain. Only triggers for running activities (`Run` and `TrailRun`).
 
 ## 📋 Prerequisites
 
