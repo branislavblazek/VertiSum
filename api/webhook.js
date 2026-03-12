@@ -1,3 +1,6 @@
+import getAthleteStats from "../athlete";
+import getAccessToken from "../auth";
+
 export default async function handler(req, res) {
     if (req.method === 'GET')
     {
@@ -19,11 +22,14 @@ export default async function handler(req, res) {
 
     if (req.method === 'POST')
     {
+        const token = await getAccessToken();
+
         const { aspect_type, object_type, object_id, owner_id } = req.body;
 
-        // TODO: remove console.log
-        console.log("WEBOOK RECIEVED: ");
+        const stats = await getAthleteStats(owner_id, token);
+
         console.log(aspect_type, object_type, object_id, owner_id);
+        console.log('ATHLETE STATS:', stats);
 
         return res.status(200).send('OK');
     }
