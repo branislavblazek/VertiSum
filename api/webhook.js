@@ -1,3 +1,4 @@
+import updateActivity from "../activity";
 import getAthleteStats from "../athlete";
 import getAccessToken from "../auth";
 
@@ -25,11 +26,15 @@ export default async function handler(req, res) {
         const token = await getAccessToken();
 
         const { aspect_type, object_type, object_id, owner_id } = req.body;
+        console.log("BODY: ", req.body);
 
         const stats = await getAthleteStats(owner_id, token);
 
-        console.log(aspect_type, object_type, object_id, owner_id);
-        console.log('ATHLETE STATS:', stats);
+        const elevation = stats.ytd_run_totals?.elevation_gain || 0;
+        const formatted = `${elevation.toLocaleString('sk-SK')} m`
+        const description = `⛰️ ${formatted} | generované cez VertiSum`;
+
+        await updateActivity(object_id, token, description)
 
         return res.status(200).send('OK');
     }
