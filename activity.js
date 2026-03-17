@@ -59,7 +59,7 @@ export async function getElevationFromActivities(token, allowedTypes) {
 
     for (const activity of activities) {
       if (allowedTypes.includes(activity.sport_type)) {
-        totalElevation += activity.total_elevation_gain || 0;
+        elevation += activity.total_elevation_gain || 0;
       }
     }
   }
