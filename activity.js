@@ -64,5 +64,7 @@ export async function getElevationFromActivities(token, allowedTypes) {
     }
   }
 
+  elevation = Math.round(elevation);
+
   return elevation;
 }
