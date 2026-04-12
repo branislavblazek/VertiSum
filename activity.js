@@ -13,7 +13,6 @@ export async function getActivity(activityId, token) {
 }
 
 async function getActivities(token, page, after) {
-  console.log(`Fetching activities, page: ${page}, after: ${after}`);
   const response = await fetch(
     `https://www.strava.com/api/v3/athlete/activities?after=${after}&page=${page}&per_page=200`,
     {

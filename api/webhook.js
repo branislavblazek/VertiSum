@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       }
     }
 
-    return res.status(403).send("Forbidden");
+    return res.status(403).send("Forbidden\n");
   }
 
   if (req.method === "POST") {
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     const { aspect_type, object_type, object_id, owner_id } = req.body;
 
     if (aspect_type !== "create" || object_type !== "activity") {
-      return res.status(200).send("IGNORE");
+      return res.status(200).send("Ignore\n");
     }
 
     const token = await getAccessToken();
@@ -34,16 +34,26 @@ export default async function handler(req, res) {
     const activity = await getActivity(object_id, token);
 
     if (!allowedTypes.includes(activity.sport_type)) {
-      return res.status(200).send("IGNORE");
+      return res.status(200).send("Ignore\n");
     }
 
     const elevation = await getElevationFromActivities(token, allowedTypes);
 
     const formatted = `${elevation.toLocaleString("sk-SK")} m`;
-    const description = `⛰️📈 ${formatted} | generované cez VertiSum`;
+    const vertiSumLine = `⛰️📈 ${formatted} | generované cez VertiSum`;
+
+    const existingDescription = (activity.description || "")
+      .split("\n")
+      .filter((line) => !line.includes("| generované cez VertiSum"))
+      .join("\n")
+      .trim();
+
+    const description = existingDescription
+      ? `${existingDescription}\n${vertiSumLine}`
+      : vertiSumLine;
 
     await updateActivity(object_id, token, description);
 
-    return res.status(200).send("OK");
+    return res.status(200).send("OK\n");
   }
 }
